@@ -1,0 +1,39 @@
+import requests
+
+# Ask the user for the UID
+uid = input("Enter UID: ")
+
+# Setup URL, parameters, and headers
+url = "https://ff.garena.com/api/antihack/check_banned"
+params = {
+    "lang": "en",
+    "uid": uid
+}
+headers = {
+    "accept": "application/json, text/plain, */*",
+    "accept-language": "en-US,en;q=0.9",
+    "cookie": "_gid=GA1.2.1960345215.1720442569; _ga_57E30E1PMN=GS1.2.1720442572.1.0.1720442572.0.0.0; _ga_KE3SY7MRSD=GS1.1.1720442568.1.1.1720442714.0.0.0; _gat_gtag_UA_207309476_25=1; _ga_RF9R6YT614=GS1.1.1720442569.1.1.1720442715.0.0.0; _ga=GA1.1.969972075.1720442568",
+    "priority": "u=1, i",
+    "referer": "https://ff.garena.com/en/support/",
+    "sec-ch-ua": '"Not/A)Brand";v="8", "Chromium";v="126", "Google Chrome";v="126"',
+    "sec-ch-ua-mobile": "?0",
+    "sec-ch-ua-platform": '"Windows"',
+    "sec-fetch-dest": "empty",
+    "sec-fetch-mode": "cors",
+    "sec-fetch-site": "same-origin",
+    "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
+    "x-requested-with": "B6FksShzIgjfrYImLpTsadjS86sddhFH"
+}
+
+# Make the request
+response = requests.get(url, headers=headers, params=params)
+data = response.json()
+
+# Display the appropriate message
+if data['status'] == 'success':
+    if data['data']['is_banned'] == 1:
+        print("\033[92mID IS BANNED\033[0m")  # Green color
+    elif data['data']['is_banned'] == 0:
+        print("ID IS SAFE")
+else:
+    print("Error: ", data['msg'])
